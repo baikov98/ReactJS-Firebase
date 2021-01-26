@@ -2,8 +2,11 @@ import React, { useEffect } from 'react'
 import TodoList from './Todo/TodoList'
 import Context from './context'
 import AddTodo from './Todo/AddTodo'
+import Loader from './Loader'
+
 function App() {
-  let [todos, setTodos] = React.useState([])
+  const [todos, setTodos] = React.useState([])
+  const [loading, setLoading] = React.useState(true)
   
   useEffect(() => {
     fetch('https://jsonplaceholder.typicode.com/todos?_limit=5')
@@ -40,7 +43,10 @@ function App() {
       <div className='wrapper'>
         <h1>React tutorial</h1>
         <AddTodo onCreate={addTodo}/>
-        { todos.length !== 0 ? <TodoList todos={todos} onToggle={toggleTodo}/> : <p>No todos!</p>}
+
+        {loading && <Loader />}
+
+        { todos.length !== 0 ? (<TodoList todos={todos} onToggle={toggleTodo}/>) : (<p>No todos!</p>)}
       </div>
     </Context.Provider>
   );
